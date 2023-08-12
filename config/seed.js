@@ -107,28 +107,28 @@ const Item = require('../models/item')
                 smlPrice: 8.99
             }
         ]},// Bowls -----------------
-        {name: 'Peanut Butter Berry Bash', emoji: '', category: categories[2], price: [
+        {name: 'Peanut Butter Berry Bash', emoji: '', category: categories[3], price: [
             {
                 lgPrice: 5.99,
                 medPrice: 7.99,
                 smlPrice: 9.99
             }
         ]},
-        {name: 'Goji Banana Blast', emoji: '', category: categories[2], price: [
+        {name: 'Goji Banana Blast', emoji: '', category: categories[3], price: [
             {
                 lgPrice: 5.99,
                 medPrice: 7.99,
                 smlPrice: 9.99
             }
         ]},
-        {name: 'Mango Berry Masterpiece', emoji: '', category: categories[2], price: [
+        {name: 'Mango Berry Masterpiece', emoji: '', category: categories[3], price: [
             {
                 lgPrice: 5.99,
                 medPrice: 7.99,
                 smlPrice: 9.99
             }
         ]},
-        {name: 'Strawberry Banana Select', emoji: '', category: categories[2], price: [
+        {name: 'Strawberry Banana Select', emoji: '', category: categories[3], price: [
             {
                 lgPrice: 5.99,
                 medPrice: 7.99,
