@@ -13,7 +13,7 @@ export default function OrderHistoryPage({ user, setUser }) {
 
     useEffect(function () {
         async function fetchOrderHistory() {
-            const orders = await ordersAPI.getOrderHitory()
+            const orders = await ordersAPI.getOrderHistory()
             setOrders(orders)
         }
         fetchOrderHistory()
