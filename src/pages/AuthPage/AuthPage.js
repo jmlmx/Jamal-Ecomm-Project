@@ -4,7 +4,7 @@ import LoginForm from '../../components/LoginForm/LoginForm'
 import SignUpForm from '../../components/SignUpForm/SignUpForm'
 import Logo from '../../components/Logo/Logo'
 
-export default function AuthPage({ seUser }) {
+export default function AuthPage({ setUser }) {
     const [showLogin, setShowLogin] = useState(true)
 
     return (
