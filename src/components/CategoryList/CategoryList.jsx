@@ -9,7 +9,7 @@ export default function CategoryList({categories, activeCat, setActiveCat }) {
         </li>
         )
         return (
-            <ul classsName={styles.CategoryList}>
+            <ul className={styles.CategoryList}>
                 {cats}
             </ul>
         )
