@@ -1,4 +1,4 @@
-import styles from './OrderDetail.module.css'
+import styles from './OrderDetail.module.scss'
 import LineItem from './LineItem/LineItem'
 
 export default function OrderDetail({ order, handleChangeQty, handleCheckout }) {

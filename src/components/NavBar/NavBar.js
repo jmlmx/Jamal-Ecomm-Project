@@ -1,4 +1,4 @@
-import styles from './NavBar.module.css'
+import styles from './NavBar.module.scss'
 import CategoryList from '../CategoryList/CategoryList'
 
 export default function NavBar(){

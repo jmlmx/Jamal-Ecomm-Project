@@ -1,4 +1,4 @@
-import styles from './OrderHistoryPage.module.css'
+import styles from './OrderHistoryPage.module.scss'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import * as ordersAPI from '../../utilities/orders-api'

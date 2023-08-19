@@ -1,4 +1,4 @@
-import styles from './OrderList.module.css'
+import styles from './OrderList.module.scss'
 import OrderListItem from '../OrderListItem/OrderListItem'
 
 export default function OrderList({ orders, activeOrder, handleSelectOrder }) {
