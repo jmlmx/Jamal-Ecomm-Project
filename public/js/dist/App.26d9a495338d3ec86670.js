@@ -22,7 +22,10 @@ function CategoryList(_ref) {
   } = _ref;
   const cats = categories.map(cat => /*#__PURE__*/React.createElement("li", {
     key: cat,
-    className: cat === activeCat ? _CategoryList_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].active : '',
+    className: cat === activeCat ? _CategoryList_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].active : ''
+    // FYI, the below will also work, but will give a warning
+    // className={cat === activeCat && 'active'}
+    ,
     onClick: () => setActiveCat(cat)
   }, cat));
   return /*#__PURE__*/React.createElement("ul", {
@@ -66,12 +69,12 @@ function LineItem(_ref) {
   }, !isPaid && /*#__PURE__*/React.createElement("button", {
     className: "btn-xs",
     onClick: () => handleChangeQty(lineItem.item._id, lineItem.qty - 1)
-  }, "-"), /*#__PURE__*/React.createElement("span", null, lineItem.qty), !isPaid && /*#__PURE__*/React.createElement("button", {
+  }, "\u2212"), /*#__PURE__*/React.createElement("span", null, lineItem.qty), !isPaid && /*#__PURE__*/React.createElement("button", {
     className: "btn-xs",
     onClick: () => handleChangeQty(lineItem.item._id, lineItem.qty + 1)
   }, "+")), /*#__PURE__*/React.createElement("div", {
     className: _LineItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].extPrice
-  }, "$", lineItem.etPrice.toFixed(2)));
+  }, "$", lineItem.extPrice.toFixed(2)));
 }
 
 /***/ }),
@@ -118,8 +121,12 @@ function LoginForm(_ref) {
   }
   function _handleSubmit() {
     _handleSubmit = _asyncToGenerator(function* (evt) {
+      // Prevent form from being submitted to the server
       evt.preventDefault();
       try {
+        // The promise returned by the signUp service method
+        // will resolve to the user object included in the
+        // payload of the JSON Web Token (JWT)
         const user = yield _utilities_users_service__WEBPACK_IMPORTED_MODULE_1__.login(credentials);
         setUser(user);
       } catch (_unused) {
@@ -169,7 +176,7 @@ function LoginForm(_ref) {
 function Logo() {
   return /*#__PURE__*/React.createElement("div", {
     className: _Logo_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].Logo
-  }, /*#__PURE__*/React.createElement("div", null, "Super"), /*#__PURE__*/React.createElement("div", null, "Smoothies"));
+  }, /*#__PURE__*/React.createElement("div", null, "SEI"), /*#__PURE__*/React.createElement("div", null, "CAFE"));
 }
 
 /***/ }),
@@ -196,7 +203,7 @@ function MenuList(_ref) {
   const items = menuItems.map(item => /*#__PURE__*/React.createElement(_MenuListItem_MenuListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
     key: item._id,
     handleAddToOrder: handleAddToOrder,
-    menuItems: items
+    menuItem: item
   }));
   return /*#__PURE__*/React.createElement("main", {
     className: _MenuList_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].MenuList
@@ -225,7 +232,7 @@ function MenuListItem(_ref) {
   return /*#__PURE__*/React.createElement("div", {
     className: _MenuListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].MenuListItem
   }, /*#__PURE__*/React.createElement("div", {
-    className: _MenuListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].emoji + '' + 'flex-ctr-ctr'
+    className: _MenuListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].emoji + ' ' + 'flex-ctr-ctr'
   }, menuItem.emoji), /*#__PURE__*/React.createElement("div", {
     className: _MenuListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].name
   }, menuItem.name), /*#__PURE__*/React.createElement("div", {
@@ -252,6 +259,8 @@ function MenuListItem(_ref) {
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 
+
+// Used to display the details of any order, including the cart (unpaid order)
 function OrderDetail(_ref) {
   let {
     order,
@@ -259,7 +268,7 @@ function OrderDetail(_ref) {
     handleCheckout
   } = _ref;
   if (!order) return null;
-  const lineItems = order.LineItems.map(item => /*#__PURE__*/React.createElement(_LineItem_LineItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  const lineItems = order.lineItems.map(item => /*#__PURE__*/React.createElement(_LineItem_LineItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
     lineItem: item,
     isPaid: order.isPaid,
     handleChangeQty: handleChangeQty,
@@ -269,23 +278,23 @@ function OrderDetail(_ref) {
     className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].OrderDetail
   }, /*#__PURE__*/React.createElement("div", {
     className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].sectionHeading
-  }, order.isPaid ? /*#__PURE__*/React.createElement("span", null, "Order ", /*#__PURE__*/React.createElement("span", {
-    lassName: "smaller"
+  }, order.isPaid ? /*#__PURE__*/React.createElement("span", null, "ORDER ", /*#__PURE__*/React.createElement("span", {
+    className: "smaller"
   }, order.orderId)) : /*#__PURE__*/React.createElement("span", null, "NEW ORDER"), /*#__PURE__*/React.createElement("span", null, new Date(order.updatedAt).toLocaleDateString())), /*#__PURE__*/React.createElement("div", {
     className: "".concat(_OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].lineItemContainer, " flex-ctr-ctr flex-col scroll-y")
   }, lineItems.length ? /*#__PURE__*/React.createElement(React.Fragment, null, lineItems, /*#__PURE__*/React.createElement("section", {
     className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].total
   }, order.isPaid ? /*#__PURE__*/React.createElement("span", {
     className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].right
-  }, "Total\xA0&nbsp") : /*#__PURE__*/React.createElement("button", {
+  }, "TOTAL\xA0\xA0") : /*#__PURE__*/React.createElement("button", {
     className: "btn-sm",
     onClick: handleCheckout,
     disabled: !lineItems.length
-  }, "Checkout"), /*#__PURE__*/React.createElement("span", null, order.totalQty), /*#__PURE__*/React.createElement("span", {
+  }, "CHECKOUT"), /*#__PURE__*/React.createElement("span", null, order.totalQty), /*#__PURE__*/React.createElement("span", {
     className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].right
   }, "$", order.orderTotal.toFixed(2)))) : /*#__PURE__*/React.createElement("div", {
-    className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].thirsty
-  }, "How 'Bout A Smoothie?")));
+    className: _OrderDetail_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].hungry
+  }, "Hungry?")));
 }
 
 /***/ }),
@@ -299,8 +308,8 @@ function OrderDetail(_ref) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ OrderList)
 /* harmony export */ });
-/* harmony import */ var _OrderList_module_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrderList.module.scss */ "./src/components/OrderList/OrderList.module.scss");
-/* harmony import */ var _OrderListItem_OrderListItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../OrderListItem/OrderListItem */ "./src/components/OrderListItem/OrderListItem.js");
+/* harmony import */ var _OrderListItem_OrderListItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../OrderListItem/OrderListItem */ "./src/components/OrderListItem/OrderListItem.js");
+/* harmony import */ var _OrderList_module_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrderList.module.scss */ "./src/components/OrderList/OrderList.module.scss");
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 
@@ -310,17 +319,17 @@ function OrderList(_ref) {
     activeOrder,
     handleSelectOrder
   } = _ref;
-  const orderItems = orders.map(o => /*#__PURE__*/React.createElement(_OrderListItem_OrderListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    orders: o,
+  const orderItems = orders.map(o => /*#__PURE__*/React.createElement(_OrderListItem_OrderListItem__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    order: o,
     isSelected: o === activeOrder,
     handleSelectOrder: handleSelectOrder,
     key: o._id
   }));
   return /*#__PURE__*/React.createElement("main", {
-    className: _OrderList_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].OrderList
+    className: _OrderList_module_scss__WEBPACK_IMPORTED_MODULE_1__["default"].OrderList
   }, orderItems.length ? orderItems : /*#__PURE__*/React.createElement("span", {
-    className: _OrderList_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].noOrders
-  }, "You Have No Previous Orders"));
+    className: _OrderList_module_scss__WEBPACK_IMPORTED_MODULE_1__["default"].noOrders
+  }, "No Previous Orders"));
 }
 
 /***/ }),
@@ -344,15 +353,15 @@ function OrderListItem(_ref) {
     handleSelectOrder
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
-    className: "".concat(_OrderListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].OrderListItem, " ").concat(isSelected ? StylePropertyMapReadOnly.selected : ''),
+    className: "".concat(_OrderListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].OrderListItem, " ").concat(isSelected ? _OrderListItem_module_scss__WEBPACK_IMPORTED_MODULE_0__["default"].selected : ''),
     onClick: () => handleSelectOrder(order)
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, " Order Id: ", /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Order Id: ", /*#__PURE__*/React.createElement("span", {
     className: "smaller"
   }, order.orderId)), /*#__PURE__*/React.createElement("div", {
     className: "smaller"
   }, new Date(order.updatedAt).toLocaleDateString())), /*#__PURE__*/React.createElement("div", {
     className: "align-rt"
-  }, /*#__PURE__*/React.createElement("div", null, order.orderTotal.toFixed(2)), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", null, "$", order.orderTotal.toFixed(2)), /*#__PURE__*/React.createElement("div", {
     className: "smaller"
   }, order.totalQty, " Item", order.totalQty > 1 ? 's' : '')));
 }
@@ -406,11 +415,16 @@ class SignUpForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
           const formData = _objectSpread({}, _this.state);
           delete formData.confirm;
           delete formData.error;
+          // The promise returned by the signUp service method
+          // will resolve to the user object included in the
+          // payload of the JSON Web Token (JWT)
           const user = yield (0,_utilities_users_service__WEBPACK_IMPORTED_MODULE_1__.signUp)(formData);
+          // Baby step
           _this.props.setUser(user);
-        } catch (error) {
+        } catch (_unused) {
+          // An error happened on the server
           _this.setState({
-            error: 'Sign Up Failed - Please Try Again'
+            error: 'Sign Up Failed - Try Again'
           });
         }
       });
@@ -419,8 +433,11 @@ class SignUpForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       };
     }();
   }
+  // We must override the render method
+  // The render method is the equivalent to a function-based component
+  // (its job is to return the UI)
   render() {
-    const disable = this.state.password != this.state.confirm; //checks to see if password and confirm match
+    const disable = this.state.password !== this.state.confirm;
     return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "form-container"
     }, /*#__PURE__*/React.createElement("form", {
@@ -433,7 +450,7 @@ class SignUpForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       onChange: this.handleChange,
       required: true
     }), /*#__PURE__*/React.createElement("label", null, "Email"), /*#__PURE__*/React.createElement("input", {
-      type: "text",
+      type: "email",
       name: "email",
       value: this.state.email,
       onChange: this.handleChange,
@@ -453,8 +470,8 @@ class SignUpForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/React.createElement("button", {
       type: "submit",
       disabled: disable
-    }, "Sign Up"))), /*#__PURE__*/React.createElement("p", {
-      className: "err-msg"
+    }, "SIGN UP"))), /*#__PURE__*/React.createElement("p", {
+      className: "error-message"
     }, "\xA0", this.state.error));
   }
 }
@@ -547,13 +564,13 @@ function App() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("main", {
     className: _App_module_scss__WEBPACK_IMPORTED_MODULE_1__["default"].App
   }, user ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
-    path: "/order/new",
+    path: "/orders/new",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_NewOrderPage_NewOrderPage__WEBPACK_IMPORTED_MODULE_3__["default"], {
       user: user,
       setUser: setUser
     })
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
-    path: "/order",
+    path: "/orders",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_OrderHistoryPage_OrderHistoryPage__WEBPACK_IMPORTED_MODULE_4__["default"], {
       user: user,
       setUser: setUser
@@ -561,7 +578,7 @@ function App() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
     path: "/*",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Navigate, {
-      to: "/order/new"
+      to: "/orders/new"
     })
   }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_AuthPage_AuthPage__WEBPACK_IMPORTED_MODULE_2__["default"], {
     setUser: setUser
@@ -598,13 +615,13 @@ function AuthPage(_ref) {
   const [showLogin, setShowLogin] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
   return /*#__PURE__*/React.createElement("main", {
     className: _AuthPage_module_scss__WEBPACK_IMPORTED_MODULE_1__["default"].AuthPage
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(_components_Logo_Logo__WEBPACK_IMPORTED_MODULE_4__["default"], null)), showLogin ? /*#__PURE__*/React.createElement(_components_LoginForm_LoginForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(_components_Logo_Logo__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/React.createElement("h3", {
+    onClick: () => setShowLogin(!showLogin)
+  }, showLogin ? 'SIGN UP' : 'LOG IN')), showLogin ? /*#__PURE__*/React.createElement(_components_LoginForm_LoginForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
     setUser: setUser
   }) : /*#__PURE__*/React.createElement(_components_SignUpForm_SignUpForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
     setUser: setUser
-  }), /*#__PURE__*/React.createElement("h3", {
-    onClick: () => setShowLogin(!showLogin)
-  }, showLogin ? 'SIGN UP' : 'LOG IN'));
+  }));
 }
 
 /***/ }),
@@ -862,21 +879,35 @@ function getById(id) {
 /* harmony import */ var _send_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./send-request */ "./src/utilities/send-request.js");
 
 const BASE_URL = '/api/orders';
+
+// Retrieve an unpaid order for the logged in user
 function getCart() {
   return (0,_send_request__WEBPACK_IMPORTED_MODULE_0__["default"])("".concat(BASE_URL, "/cart"));
 }
+
+// Add an item to the cart
 function addItemToCart(itemId) {
-  return (0,_send_request__WEBPACK_IMPORTED_MODULE_0__["default"])("".concat(BASE_URL, "/cat/items/").concat(itemId), 'POST');
+  // Just send itemId for best security (no pricing)
+  return (0,_send_request__WEBPACK_IMPORTED_MODULE_0__["default"])("".concat(BASE_URL, "/cart/items/").concat(itemId), 'POST');
 }
+
+// Update the item's qty in the cart
+// Will add the item to the order if not currently in the cart
+// Sending info via the data payload instead of a long URL
 function setItemQtyInCart(itemId, newQty) {
   return (0,_send_request__WEBPACK_IMPORTED_MODULE_0__["default"])("".concat(BASE_URL, "/cart/qty"), 'PUT', {
     itemId,
     newQty
   });
 }
+
+// Updates the order's (cart's) isPaid property to true
 function checkout() {
+  // Changing data on the server, so make it a POST request
   return (0,_send_request__WEBPACK_IMPORTED_MODULE_0__["default"])("".concat(BASE_URL, "/cart/checkout"), 'POST');
 }
+
+// Return all paid orders for the logged in user
 function getOrderHistory() {
   return (0,_send_request__WEBPACK_IMPORTED_MODULE_0__["default"])("".concat(BASE_URL, "/history"));
 }
@@ -904,6 +935,8 @@ function _sendRequest() {
     let method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
     let payload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
     return function* () {
+      // Fetch takes an optional options object as the 2nd argument
+      // used to include a data payload, set headers, etc.
       const options = {
         method
       };
@@ -915,10 +948,14 @@ function _sendRequest() {
       }
       const token = (0,_users_service__WEBPACK_IMPORTED_MODULE_0__.getToken)();
       if (token) {
+        // Ensure headers object exists
         options.headers = options.headers || {};
+        // Add token to an Authorization header
+        // Prefacing with 'Bearer' is recommended in the HTTP specification
         options.headers.Authorization = "Bearer ".concat(token);
       }
       const res = yield fetch(url, options);
+      // res.ok will be false if the status code set to 4xx in the controller action
       if (res.ok) return res.json();
       throw new Error('Bad Request');
     }();
@@ -935,9 +972,9 @@ function _sendRequest() {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   login: () => (/* binding */ login),
 /* harmony export */   signUp: () => (/* binding */ signUp)
 /* harmony export */ });
-/* unused harmony export login */
 /* harmony import */ var _send_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./send-request */ "./src/utilities/send-request.js");
 
 const BASE_URL = '/api/users';
@@ -972,7 +1009,11 @@ function signUp(_x) {
 }
 function _signUp() {
   _signUp = _asyncToGenerator(function* (userData) {
+    // Delete the network request code to the
+    // users-api.js module which will ultimately
+    // return the JWT
     const token = yield _users_api__WEBPACK_IMPORTED_MODULE_0__.signUp(userData);
+    // Persist the token to localStorage
     localStorage.setItem('token', token);
     return getUser();
   });
@@ -983,17 +1024,21 @@ function login(_x2) {
 }
 function _login() {
   _login = _asyncToGenerator(function* (credentials) {
-    const token = yield userAPI.login(credentials);
-    localStorage.setITem('token', token);
+    const token = yield _users_api__WEBPACK_IMPORTED_MODULE_0__.login(credentials);
+    // Persist the token to localStorage
+    localStorage.setItem('token', token);
     return getUser();
   });
   return _login.apply(this, arguments);
 }
 function getToken() {
   const token = localStorage.getItem('token');
+  // getItem will return null if no key
   if (!token) return null;
   const payload = JSON.parse(atob(token.split('.')[1]));
+  // A JWT's expiration is expressed in seconds, not miliseconds
   if (payload.exp < Date.now() / 1000) {
+    // Token has expired
     localStorage.removeItem('token');
     return null;
   }
@@ -1028,7 +1073,7 @@ function logOut() {
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.l8hJyaPvo9smd6LiNqWK {
-  color: var(--text-length);
+  color: var(--text-light);
   list-style: none;
   padding: 0;
   font-size: 1.7vw;
@@ -1037,7 +1082,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.l8hJyaPvo9smd6LiNqWK {
 .l8hJyaPvo9smd6LiNqWK li {
   padding: 0.6vmin;
   text-align: center;
-  border: radius 0.5vmin;
+  border-radius: 0.5vmin;
   margin-bottom: 0.5vmin;
 }
 
@@ -1049,9 +1094,9 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.l8hJyaPvo9smd6LiNqWK {
 
 .l8hJyaPvo9smd6LiNqWK li._scckhAN2KPE1u73kR14 {
   color: var(--text-dark);
-  background-color: var(--tan-li);
+  background-color: var(--tan-1);
   border: 0.1vmin solid var(--tan-3);
-}`, "",{"version":3,"sources":["webpack://./src/components/CategoryList/CategoryList.module.scss"],"names":[],"mappings":"AAAA;EACI,yBAAA;EACA,gBAAA;EACA,UAAA;EACA,gBAAA;AACJ;;AAEI;EACI,gBAAA;EACA,kBAAA;EACA,sBAAA;EACA,sBAAA;AACR;;AAEI;EACI,eAAA;EACA,+BAAA;EACA,mBAAA;AACR;;AAEI;EACI,uBAAA;EACA,+BAAA;EACA,kCAAA;AACR","sourcesContent":[".CategoryList {\n    color: var(--text-length);\n    list-style: none;\n    padding: 0;\n    font-size: 1.7vw;\n    }\n\n    .CategoryList li {\n        padding: .6vmin;\n        text-align: center;\n        border: radius 0.5vmin;\n        margin-bottom: .5vmin;\n    }\n\n    .CategoryList li:hover:not(.active) {\n        cursor: pointer;\n        background-color: var(--orange);\n        color: var(--white);\n    }\n\n    .CategoryList li.active {\n        color: var(--text-dark);\n        background-color: var(--tan-li);\n        border: .1vmin solid var(--tan-3);\n    }\n\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/CategoryList/CategoryList.module.scss"],"names":[],"mappings":"AAAA;EACI,wBAAA;EACA,gBAAA;EACA,UAAA;EACA,gBAAA;AACJ;;AAEI;EACA,gBAAA;EACA,kBAAA;EACA,sBAAA;EACA,sBAAA;AACJ;;AAEI;EACA,eAAA;EACA,+BAAA;EACA,mBAAA;AACJ;;AAEI;EACA,uBAAA;EACA,8BAAA;EACA,kCAAA;AACJ","sourcesContent":[".CategoryList {\n    color: var(--text-light);\n    list-style: none;\n    padding: 0;\n    font-size: 1.7vw;\n    }\n    \n    .CategoryList li {\n    padding: .6vmin;\n    text-align: center;\n    border-radius: .5vmin;\n    margin-bottom: .5vmin;\n    }\n    \n    .CategoryList li:hover:not(.active) {\n    cursor: pointer;\n    background-color: var(--orange);\n    color: var(--white);\n    }\n    \n    .CategoryList li.active {\n    color: var(--text-dark);\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    }\n    \n"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"CategoryList": `l8hJyaPvo9smd6LiNqWK`,
@@ -1111,7 +1156,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.ZeRW57PNaWpYVsw6JlaC {
 
 .ZeRW57PNaWpYVsw6JlaC button {
   margin: 0;
-}`, "",{"version":3,"sources":["webpack://./src/components/LineItem/LineItem.module.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,aAAA;EACA,gDAAA;EACA,gBAAA;EACA,wBAAA;EACA,8BAAA;EACA,sCAAA;EACA,gBAAA;AACJ;;AAEI;EACA,yCAAA;AACJ;;AAEI;EACI,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,gBAAA;AACR;;AAEI;EACI,aAAA;EACA,yBAAA;EACA,mBAAA;EACA,gBAAA;AACR;;AAEI;EACI,SAAA;AACR","sourcesContent":[".LineItem {\n    width: 100%;\n    display: grid;\n    grid-template-columns: 3vw 15.35vw 5.75vw 5.25vw;\n    padding: 1vmin 0;\n    color: var(--text-light);\n    background-color: var(--white);\n    border-top: .1vmin solid var(--tan-3);\n    font-size: 1.5vw;\n    }\n\n    .LineItem:last-child {\n    border-bottom: .1vmin solid var(--tan-3);\n    }\n\n    .LineItem .qty {\n        display: flex;\n        justify-content: space-between;\n        align-items: center;\n        font-size: 1.3vw;\n    }\n\n    .LineItem .extPrice {\n        display: flex;\n        justify-content: flex-end;\n        align-items: center;\n        font-size: 1.3vw;\n    }\n\n    .LineItem button {\n        margin: 0;\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/LineItem/LineItem.module.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,aAAA;EACA,gDAAA;EACA,gBAAA;EACA,wBAAA;EACA,8BAAA;EACA,sCAAA;EACA,gBAAA;AACJ;;AAEI;EACA,yCAAA;AACJ;;AAEI;EACA,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,gBAAA;AACJ;;AAEI;EACA,aAAA;EACA,yBAAA;EACA,mBAAA;EACA,gBAAA;AACJ;;AAEI;EACA,SAAA;AACJ","sourcesContent":[".LineItem {\n    width: 100%;\n    display: grid;\n    grid-template-columns: 3vw 15.35vw 5.75vw 5.25vw;\n    padding: 1vmin 0;\n    color: var(--text-light);\n    background-color: var(--white);\n    border-top: .1vmin solid var(--tan-3);\n    font-size: 1.5vw;\n    }\n    \n    .LineItem:last-child {\n    border-bottom: .1vmin solid var(--tan-3);\n    }\n    \n    .LineItem .qty {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    font-size: 1.3vw;\n    }\n    \n    .LineItem .extPrice {\n    display: flex;\n    justify-content: flex-end;\n    align-items: center;\n    font-size: 1.3vw;\n    }\n    \n    .LineItem button {\n    margin: 0;\n    }\n    "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"LineItem": `ZeRW57PNaWpYVsw6JlaC`,
@@ -1142,19 +1187,18 @@ ___CSS_LOADER_EXPORT___.locals = {
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.EDeinQzfS2N2rVW_Z1GP {
-  height: 15vmin;
-  width: 15vmin;
+  height: 12vmin;
+  width: 12vmin;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: lightblue;
-  margin: 10px;
+  background-color: var(--orange);
   color: var(--tan-1);
   font-size: 2.7vmin;
-  border: 0.6vmin solid 148;
-}`, "",{"version":3,"sources":["webpack://./src/components/Logo/Logo.module.scss"],"names":[],"mappings":"AAAA;EACI,cAAA;EACA,aAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,2BAAA;EACA,YAAA;EACA,mBAAA;EACA,kBAAA;EACA,yBAAA;AACJ","sourcesContent":[".Logo {\n    height: 15vmin;\n    width: 15vmin;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    border-radius: 50%;\n    background-color: lightblue;\n    margin: 10px;\n    color: var(--tan-1);\n    font-size: 2.7vmin;\n    border: .6vmin solid blue($color: #1ce594);\n}"],"sourceRoot":""}]);
+  border: 0.6vmin solid var(--tan-2);
+}`, "",{"version":3,"sources":["webpack://./src/components/Logo/Logo.module.scss"],"names":[],"mappings":"AAAA;EACI,cAAA;EACA,aAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,+BAAA;EACA,mBAAA;EACA,kBAAA;EACA,kCAAA;AACJ","sourcesContent":[".Logo {\n    height: 12vmin;\n    width: 12vmin;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    border-radius: 50%;\n    background-color: var(--orange);\n    color: var(--tan-1);\n    font-size: 2.7vmin;\n    border: .6vmin solid var(--tan-2);\n    }\n    "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"Logo": `EDeinQzfS2N2rVW_Z1GP`
@@ -1189,7 +1233,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.eBz5FvD9TgyIgfFi1MdG {
   margin: 3vmin 0;
   padding: 3vmin;
   overflow-y: scroll;
-}`, "",{"version":3,"sources":["webpack://./src/components/MenuList/MenuList.module.scss"],"names":[],"mappings":"AAAA;EACI,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,eAAA;EACA,cAAA;EACA,kBAAA;AACJ","sourcesContent":[".MenuList {\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 2vmin;\n    margin: 3vmin 0;\n    padding: 3vmin;\n    overflow-y: scroll;\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/MenuList/MenuList.module.scss"],"names":[],"mappings":"AAAA;EACI,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,eAAA;EACA,cAAA;EACA,kBAAA;AACJ","sourcesContent":[".MenuList {\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 2vmin;\n    margin: 3vmin 0;\n    padding: 3vmin;\n    overflow-y: scroll;\n    }\n    "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"MenuList": `eBz5FvD9TgyIgfFi1MdG`
@@ -1240,7 +1284,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.X4tFBfG4MKknHvd01CKE {
   border-radius: 1vmin;
 }
 
-.TBDDQCTAhBAQdY1GBCUx .fO9kiPygtr0vmzsXoUxA {
+.X4tFBfG4MKknHvd01CKE .fO9kiPygtr0vmzsXoUxA {
   display: flex;
   flex-direction: column;
 }
@@ -1255,12 +1299,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.X4tFBfG4MKknHvd01CKE {
   font-size: 2vw;
   text-align: center;
   color: var(--text-light);
-}`, "",{"version":3,"sources":["webpack://./src/components/MenuListItem/MenuListItem.module.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,oBAAA;EACA,cAAA;EACA,wBAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,gBAAA;AACJ;;AAEI;EACI,WAAA;EACA,UAAA;EACA,cAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;AACR;;AAEI;EACI,aAAA;EACA,sBAAA;AACR;;AAEI;EACI,gBAAA;EACA,kBAAA;EACA,wBAAA;AACR;;AAEI;EACI,cAAA;EACA,kBAAA;EACA,wBAAA;AACR","sourcesContent":[".MenuListItem {\n    width: 100%;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 3vmin;\n    padding: 2vmin;\n    color: var(--text-light);\n    background-color: var(--white);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n    font-size: 4vmin;\n}\n\n    .MenuListItem .emoji {\n        height: 8vw;\n        width: 8vw;\n        font-size: 4vw;\n        background-color: var(--tan-1);\n        border: .1vmin solid var(--tan-3);\n        border-radius:  1vmin;\n    }\n    \n    .MenuListIem .buy {\n        display: flex;\n        flex-direction: column;\n    }\n    \n    .MenuListItem .buy span {\n        font-size: 1.7vw;\n        text-align: center;\n        color: var(--text-light);\n    }\n    \n    .MenuListItem .name {\n        font-size: 2vw;\n        text-align: center;\n        color: var(--text-light);\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/MenuListItem/MenuListItem.module.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,oBAAA;EACA,cAAA;EACA,wBAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,gBAAA;AACJ;;AAEE;EACE,WAAA;EACA,UAAA;EACA,cAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;AACJ;;AAEE;EACE,aAAA;EACA,sBAAA;AACJ;;AAEE;EACE,gBAAA;EACA,kBAAA;EACA,wBAAA;AACJ;;AAEE;EACE,cAAA;EACA,kBAAA;EACA,wBAAA;AACJ","sourcesContent":[".MenuListItem {\n    width: 100%;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 3vmin;\n    padding: 2vmin;\n    color: var(--text-light);\n    background-color: var(--white);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n    font-size: 4vmin;\n  }\n  \n  .MenuListItem .emoji {\n    height: 8vw;\n    width: 8vw;\n    font-size: 4vw;\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n  }\n  \n  .MenuListItem .buy {\n    display: flex;\n    flex-direction: column;\n  }\n  \n  .MenuListItem .buy span {\n    font-size: 1.7vw;\n    text-align: center;\n    color: var(--text-light);\n  }\n  \n  .MenuListItem .name {\n    font-size: 2vw;\n    text-align: center;\n    color: var(--text-light);\n  }"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"MenuListItem": `X4tFBfG4MKknHvd01CKE`,
 	"emoji": `GqkE12RHPdZZg1360W4p`,
-	"MenuListIem": `TBDDQCTAhBAQdY1GBCUx`,
 	"buy": `fO9kiPygtr0vmzsXoUxA`,
 	"name": `VR1OCl60qOXrRx1IzVEa`
 };
@@ -1329,11 +1372,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.cPR75kdAXDGVxib0PszB {
   justify-content: flex-end;
 }
 
-.cPR75kdAXDGVxib0PszB .iXJa4_YdG5mWKroRZBnz {
+.cPR75kdAXDGVxib0PszB .dyrUhYTujwEUiMzpjxWX {
   position: absolute;
   top: 50vh;
   font-size: 2vmin;
-}`, "",{"version":3,"sources":["webpack://./src/components/OrderDetail/OrderDetail.module.scss"],"names":[],"mappings":"AAAA;EACI,sBAAA;EACA,2BAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;EACA,wBAAA;AACJ;;AAEI;EACI,WAAA;AACR;;AAEI;EACI,iBAAA;EACA,2BAAA;EACA,4BAAA;EACA,WAAA;AACR;;AAEI;EACI,WAAA;EACA,aAAA;EACA,4CAAA;EACA,gBAAA;EACA,wBAAA;EACA,sCAAA;AACR;;AAEI;EACI,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,gBAAA;EACA,uBAAA;AACR;;AAEI;EACI,aAAA;EACA,yBAAA;AACR;;AAEI;EACI,kBAAA;EACA,SAAA;EACA,gBAAA;AACR","sourcesContent":[".OrderDetail {\n    flex-direction: column;\n    justify-content: flex-start;\n    align-items: center;\n    padding: 3vmin;\n    font-size: 2vmin;\n    color: var(--text-light);\n}\n\n    .OrderDetail .sectionHeading {\n        width: 100%;\n    }\n\n    .OrderDetail .lineItemContainer {\n        margin-top: 3vmin;\n        justify-content: flex-start;\n        height: calc(100vh - 18vmin);\n        width: 100%;\n    }\n\n    .OrderDetail .total {\n        width: 100%;\n        display: grid;\n        grid-template-columns: 18.35vw 5.75vw 5.25vw;\n        padding: 1vmin 0;\n        color: var(--text-light);\n        border-top: .1vmin solid var(--tan-3);\n    }\n\n    .OrderDetail .total span {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        font-size: 1.5vw;\n        color: var(--text-dark);\n    }\n\n    .OrderDetail .total span.right {\n        display: flex;\n        justify-content: flex-end;\n    }\n\n    .OrderDetail .thirsty {\n        position: absolute;\n        top: 50vh;\n        font-size: 2vmin;\n    }\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/OrderDetail/OrderDetail.module.scss"],"names":[],"mappings":"AAAA;EACI,sBAAA;EACA,2BAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;EACA,wBAAA;AACJ;;AAEE;EACE,WAAA;AACJ;;AAEE;EACE,iBAAA;EACA,2BAAA;EACA,4BAAA;EACA,WAAA;AACJ;;AAEE;EACE,WAAA;EACA,aAAA;EACA,4CAAA;EACA,gBAAA;EACA,wBAAA;EACA,sCAAA;AACJ;;AAEE;EACE,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,gBAAA;EACA,uBAAA;AACJ;;AAEE;EACE,aAAA;EACA,yBAAA;AACJ;;AAEE;EACE,kBAAA;EACA,SAAA;EACA,gBAAA;AACJ","sourcesContent":[".OrderDetail {\n    flex-direction: column;\n    justify-content: flex-start;\n    align-items: center;\n    padding: 3vmin;\n    font-size: 2vmin;\n    color: var(--text-light);\n  }\n  \n  .OrderDetail .sectionHeading {\n    width: 100%\n  }\n  \n  .OrderDetail .lineItemContainer {\n    margin-top: 3vmin;\n    justify-content: flex-start;\n    height: calc(100vh - 18vmin);\n    width: 100%;\n  }\n  \n  .OrderDetail .total {\n    width: 100%;\n    display: grid;\n    grid-template-columns: 18.35vw 5.75vw 5.25vw;\n    padding: 1vmin 0;\n    color: var(--text-light);\n    border-top: .1vmin solid var(--tan-3);\n  }\n  \n  .OrderDetail .total span {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 1.5vw;\n    color: var(--text-dark);\n  }\n  \n  .OrderDetail .total span.right {\n    display: flex;\n    justify-content: flex-end;\n  }\n  \n  .OrderDetail .hungry {\n    position: absolute;\n    top: 50vh;\n    font-size: 2vmin;\n  }\n  "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"OrderDetail": `cPR75kdAXDGVxib0PszB`,
@@ -1341,7 +1384,7 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"lineItemContainer": `vVkqXbRqxMYDCnUttflb`,
 	"total": `V5OAbv7QFHo6WglNx0m0`,
 	"right": `GtULiQQdndLNSQN4Yc97`,
-	"thirsty": `iXJa4_YdG5mWKroRZBnz`
+	"hungry": `dyrUhYTujwEUiMzpjxWX`
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1383,7 +1426,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.l6Ner7C7O5I4V69HVVgW {
   font-size: 2vmin;
   position: absolute;
   top: 50vh;
-}`, "",{"version":3,"sources":["webpack://./src/components/OrderList/OrderList.module.scss"],"names":[],"mappings":"AAAA;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,eAAA;EACA,cAAA;EACA,kBAAA;AACJ;;AAEI;EACI,wBAAA;EACA,gBAAA;EACA,kBAAA;EACA,SAAA;AACR","sourcesContent":[".OrderList {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 2vmin;\n    margin: 3vmin 0;\n    padding: 3vmin;\n    overflow-y: scroll;\n}\n\n    .OrderList .noOrders {\n        color: var(--text-light);\n        font-size: 2vmin;\n        position: absolute;\n        top: calc(50vh);\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/OrderList/OrderList.module.scss"],"names":[],"mappings":"AAAA;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,eAAA;EACA,cAAA;EACA,kBAAA;AACJ;;AAEI;EACA,wBAAA;EACA,gBAAA;EACA,kBAAA;EACA,SAAA;AACJ","sourcesContent":[".OrderList {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 2vmin;\n    margin: 3vmin 0;\n    padding: 3vmin;\n    overflow-y: scroll;\n    }\n    \n    .OrderList .noOrders {\n    color: var(--text-light);\n    font-size: 2vmin;\n    position: absolute;\n    top: calc(50vh);\n    }\n    "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"OrderList": `l6Ner7C7O5I4V69HVVgW`,
@@ -1440,7 +1483,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.SbDKL2bctOyC5ZgA0KfW {
 .SbDKL2bctOyC5ZgA0KfW:not(.mOA_Z5p05rn7VW_2oU68):hover {
   border-color: var(--orange);
   border-width: 0.2vmin;
-}`, "",{"version":3,"sources":["webpack://./src/components/OrderListItem/OrderListItem.module.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,oBAAA;EACA,cAAA;EACA,wBAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,gBAAA;EACA,eAAA;AACJ;;AAEI;EACI,sBAAA;AACR;;AAEI;EACI,2BAAA;EACA,qBAAA;EACA,eAAA;AACR;;AAEI;EACI,2BAAA;EACA,qBAAA;AACR","sourcesContent":[".OrderListItem {\n    width: 100%;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 3vmin;\n    padding: 2vmin;\n    color: var(--text-light);\n    background-color: var(--white);\n    border: .2vmin solid var(--tan-3);\n    border-radius: 1vmin;\n    font-size: 2vmin;\n    cursor: pointer;\n}\n\n    .OrderListItem > div > div:first-child {\n        margin-bottom: .5vmin;\n    }\n\n    .OrderListItem.selected {\n        border-color: var(--orange);\n        border-width: .2vmin;\n        cursor: default\n    }\n\n    .OrderListItem:not(.selected):hover {\n        border-color: var(--orange);\n        border-width: .2vmin;\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/OrderListItem/OrderListItem.module.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,oBAAA;EACA,cAAA;EACA,wBAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;EACA,gBAAA;EACA,eAAA;AACJ;;AAEI;EACA,sBAAA;AACJ;;AAEI;EACA,2BAAA;EACA,qBAAA;EACA,eAAA;AACJ;;AAEI;EACA,2BAAA;EACA,qBAAA;AACJ","sourcesContent":[".OrderListItem {\n    width: 100%;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 3vmin;\n    padding: 2vmin;\n    color: var(--text-light);\n    background-color: var(--white);\n    border: .2vmin solid var(--tan-3);\n    border-radius: 1vmin;\n    font-size: 2vmin;\n    cursor: pointer;\n    }\n    \n    .OrderListItem > div> div:first-child {\n    margin-bottom: .5vmin;\n    }\n    \n    .OrderListItem.selected {\n    border-color: var(--orange);\n    border-width: .2vmin;\n    cursor: default;\n    }\n    \n    .OrderListItem:not(.selected):hover {\n    border-color: var(--orange);\n    border-width: .2vmin;\n    }\n    "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"OrderListItem": `SbDKL2bctOyC5ZgA0KfW`,
@@ -1477,7 +1520,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.x80Y_LltA5PliUAZlphe {
 
 .x80Y_LltA5PliUAZlphe .qHiYGQB1ZEMvrGOQoBrO {
   font-size: smaller;
-}`, "",{"version":3,"sources":["webpack://./src/components/UserLogOut/UserLogOut.module.scss"],"names":[],"mappings":"AAAA;EACI,kBAAA;EACA,wBAAA;EACA,kBAAA;AACJ;;AAEI;EACI,kBAAA;AACR","sourcesContent":[".UserLogOut {\n    font-size: 1.5vmin;\n    color: var(--text-light);\n    text-align: center;\n}\n\n    .UserLogOut .email {\n        font-size: smaller;\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/components/UserLogOut/UserLogOut.module.scss"],"names":[],"mappings":"AAAA;EACI,kBAAA;EACA,wBAAA;EACA,kBAAA;AACJ;;AAEI;EACI,kBAAA;AACR","sourcesContent":[".UserLogOut {\n    font-size: 1.5vmin;\n    color: var(--text-light);\n    text-align: center;\n    }\n    \n    .UserLogOut .email {\n        font-size: smaller;\n    }\n    "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"UserLogOut": `x80Y_LltA5PliUAZlphe`,
@@ -1507,11 +1550,10 @@ ___CSS_LOADER_EXPORT___.locals = {
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.ncLgupkhPNit1w0VMAKq {
+  height: 100%;
   justify-content: center;
   align-items: center;
-  width: -moz-fit-content;
-  width: fit-content;
-}`, "",{"version":3,"sources":["webpack://./src/pages/App/App.module.scss"],"names":[],"mappings":"AAAA;EACI,uBAAA;EACA,mBAAA;EACA,uBAAA;EACA,kBAAA;AACJ","sourcesContent":[".App {\n    justify-content:center;\n    align-items: center;\n    width: -moz-fit-content;\n    width: fit-content;\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/pages/App/App.module.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,uBAAA;EACA,mBAAA;AACJ","sourcesContent":[".App {\n    height: 100%;\n    justify-content:center;\n    align-items: center;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"App": `ncLgupkhPNit1w0VMAKq`
@@ -1540,22 +1582,20 @@ ___CSS_LOADER_EXPORT___.locals = {
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.RygkJgZmBHTETlLP3C3i {
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background-color: var(--white);
   border-radius: 2vmin;
-  width: -moz-max-content;
-  width: max-content;
 }
 
 .RygkJgZmBHTETlLP3C3i h3 {
-  margin: 3vmin;
+  margin-top: 4vmin;
   text-align: center;
   color: var(--text-light);
   cursor: pointer;
-}`, "",{"version":3,"sources":["webpack://./src/pages/AuthPage/AuthPage.module.scss"],"names":[],"mappings":"AAAA;EACI,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,8BAAA;EACA,oBAAA;EACA,uBAAA;EACA,kBAAA;AACJ;;AAEA;EACI,aAAA;EACA,kBAAA;EACA,wBAAA;EACA,eAAA;AACJ","sourcesContent":[".AuthPage {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    background-color: var(--white);\n    border-radius: 2vmin;\n    width:-moz-max-content;\n    width:max-content;\n}\n\n.AuthPage h3 {\n    margin: 3vmin;\n    text-align: center;\n    color: var(--text-light);\n    cursor: pointer;\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/pages/AuthPage/AuthPage.module.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,aAAA;EACA,6BAAA;EACA,mBAAA;EACA,8BAAA;EACA,oBAAA;AACJ;;AAEE;EACE,iBAAA;EACA,kBAAA;EACA,wBAAA;EACA,eAAA;AACJ","sourcesContent":[".AuthPage {\n    height: 100%;\n    display: flex;\n    justify-content: space-evenly;\n    align-items: center;\n    background-color: var(--white);\n    border-radius: 2vmin;\n  }\n  \n  .AuthPage h3 {\n    margin-top: 4vmin;\n    text-align: center;\n    color: var(--text-light);\n    cursor: pointer;\n  }  "],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"AuthPage": `RygkJgZmBHTETlLP3C3i`
@@ -1598,7 +1638,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.RZqTJBeYN7RXwcHgPFys {
   justify-content: space-between;
   align-items: center;
   margin: 3vmin 2vmin;
-}`, "",{"version":3,"sources":["webpack://./src/pages/NewOrderPage/NewOrderPage.module.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,aAAA;EACA,sCAAA;EACA,uBAAA;EACA,8BAAA;EACA,oBAAA;AACJ;;AAEI;EACI,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,mBAAA;EACA,mBAAA;AACR","sourcesContent":[".NewOrderPage {\n    height: 100%;\n    display: grid;\n    grid-template-columns: 1.6fr 3.5fr 3fr;\n    grid-template-rows: 1fr;\n    background-color: var(--white);\n    border-radius: 2vmin;\n}\n\n    .NewOrderPage aside {\n        display: flex;\n        flex-direction: column;\n        justify-content: space-between;\n        align-items: center;\n        margin: 3vmin 2vmin;\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/pages/NewOrderPage/NewOrderPage.module.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,aAAA;EACA,sCAAA;EACA,uBAAA;EACA,8BAAA;EACA,oBAAA;AACJ;;AAEE;EACE,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,mBAAA;EACA,mBAAA;AACJ","sourcesContent":[".NewOrderPage {\n    height: 100%;\n    display: grid;\n    grid-template-columns: 1.6fr 3.5fr 3fr;\n    grid-template-rows: 1fr;\n    background-color: var(--white);\n    border-radius: 2vmin;\n  }\n  \n  .NewOrderPage aside {\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    align-items: center;\n    margin: 3vmin 2vmin;\n  }\n"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"NewOrderPage": `RZqTJBeYN7RXwcHgPFys`
@@ -1641,7 +1681,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.U7F51i6q23MB43wS4GeC {
   justify-content: space-between;
   align-items: center;
   margin: 3vmin 2vmin;
-}`, "",{"version":3,"sources":["webpack://./src/pages/OrderHistoryPage/OrderHistoryPage.module.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,aAAA;EACA,sCAAA;EACA,uBAAA;EACA,8BAAA;EACA,oBAAA;AACJ;;AAEI;EACI,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,mBAAA;EACA,mBAAA;AACR","sourcesContent":[".OrderHistoryPage {\n    height: 100%;\n    display: grid;\n    grid-template-columns: 1.6fr 3.5fr 3fr;\n    grid-template-rows: 1fr;\n    background-color: var(--white);\n    border-radius: 2vmin;\n}\n\n    .OrderHistoryPage .aside {\n        display: flex;\n        flex-direction: column;\n        justify-content: space-between;\n        align-items: center;\n        margin: 3vmin 2vmin;\n    }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/pages/OrderHistoryPage/OrderHistoryPage.module.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,aAAA;EACA,sCAAA;EACA,uBAAA;EACA,8BAAA;EACA,oBAAA;AACJ;;AAEE;EACE,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,mBAAA;EACA,mBAAA;AACJ","sourcesContent":[".OrderHistoryPage {\n    height: 100%;\n    display: grid;\n    grid-template-columns: 1.6fr 3.5fr 3fr;\n    grid-template-rows: 1fr;\n    background-color: var(--white);\n    border-radius: 2vmin;\n  }\n  \n  .OrderHistoryPage .aside {\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    align-items: center;\n    margin: 3vmin 2vmin;\n  }"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"OrderHistoryPage": `U7F51i6q23MB43wS4GeC`,
@@ -1676,7 +1716,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:root {
   --tan-2: #E7E2DD;
   --tan-3: #E2D9D1;
   --tan-4: #D3C1AE;
-  --orange: #F67F00;
+  --blue: #1998ee;
+  --red: #f26354;
   --text-light: #968c84;
   --text-dark: #615954;
 }
@@ -1690,7 +1731,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--tan-4);
+  background-color: var(--blue);
   padding: 2vmin;
   height: 100vh;
 }
@@ -1789,7 +1830,7 @@ button, a.TBXDNkoiIC5M9gb6kifl {
   margin: 1vmin;
   padding: 1vmin;
   color: var(--white);
-  background-color: var(--orange);
+  background-color: var(--red);
   font-size: 2vmin;
   font-weight: bold;
   text-decoration: none;
@@ -1818,7 +1859,7 @@ button:disabled, form:invalid button[type=submit] {
 button[type=submit] {
   grid-column: span 2;
   margin: 1vmin 0 0;
-}`, "",{"version":3,"sources":["webpack://./src/styles.scss"],"names":[],"mappings":"AAAA;EACI,gBAAA;EACA,gBAAA;EACA,gBAAA;EACA,gBAAA;EACA,gBAAA;EACA,iBAAA;EACA,qBAAA;EACA,oBAAA;AACJ;;AAEE;EACE,sBAAA;AACJ;;AAEE;EACE,SAAA;EACA,8JAAA;EAGA,mCAAA;EACA,kCAAA;EACA,8BAAA;EACA,cAAA;EACA,aAAA;AADJ;;AAIE;EACE,+EAAA;AADJ;;AAKE;EACE,YAAA;AAFJ;;AAKE;EACE,kBAAA;AAFJ;;AAKE;EACE,iBAAA;AAFJ;;AAKE;EACE,kBAAA;AAFJ;;AAKE;EACE,aAAA;EACA,uBAAA;EACA,mBAAA;AAFJ;;AAKE;EACE,sBAAA;AAFJ;;AAKE;EACE,yBAAA;AAFJ;;AAKE;EACE,kBAAA;AAFJ;;AAKE;EACE,aAAA;EACA,6BAAA;EACA,mBAAA;EACA,8BAAA;EACA,uBAAA;EACA,kCAAA;EACA,oBAAA;EACA,gBAAA;EACA,kBAAA;EACA,gBAAA;AAFJ;;AAKE;EACE,cAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;AAFJ;;AAKE;EACE,oBAAA;EACA,kBAAA;AAFJ;;AAKE;EACE,aAAA;EACA,8BAAA;EACA,aAAA;EACA,wBAAA;AAFJ;;AAKE;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;AAFJ;;AAKE;EACE,cAAA;EACA,gBAAA;EACA,kCAAA;EACA,sBAAA;EACA,uBAAA;EACA,iCAAA,EAAA,sBAAA;EACA,aAAA;AAFJ;;AAKE;EACE,2BAAA;AAFJ;;AAKE;EACE,aAAA;EACA,cAAA;EACA,mBAAA;EACA,+BAAA;EACA,gBAAA;EACA,iBAAA;EACA,qBAAA;EACA,kBAAA;EACA,kCAAA;EACA,sBAAA;EACA,aAAA;EACA,eAAA;AAFJ;;AAKE;EACE,kBAAA;EACA,wBAAA;AAFJ;;AAKE;EACE,gBAAA;EACA,wBAAA;AAFJ;;AAKE;EACE,mBAAA;EACA,8BAAA;AAFJ;;AAKE;EACE,mBAAA;EACA,iBAAA;AAFJ","sourcesContent":[":root {\n    --white: #FFFFFF;\n    --tan-1: #FBF9F6;\n    --tan-2: #E7E2DD;\n    --tan-3: #E2D9D1;\n    --tan-4: #D3C1AE;\n    --orange: #F67F00;\n    --text-light: #968c84;\n    --text-dark: #615954;\n  }\n  \n  *, *:before, *:after {\n    box-sizing: border-box;\n  }\n  \n  body {\n    margin: 0;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n    sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    background-color: var(--tan-4);\n    padding: 2vmin;\n    height: 100vh;\n  }\n  \n  code {\n    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',\n      monospace;\n  }\n  \n  #root {\n    height: 100%;\n  }\n  \n  .align-ctr {\n    text-align: center;\n  }\n  \n  .align-rt {\n    text-align: right;\n  }\n  \n  .smaller {\n    font-size: smaller;\n  }\n  \n  .flex-ctr-ctr {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n  \n  .flex-col {\n    flex-direction: column;\n  }\n  \n  .flex-j-end {\n    justify-content: flex-end;\n  }\n  \n  .scroll-y {\n    overflow-y: scroll;\n  }\n  \n  .section-heading {\n    display: flex;\n    justify-content: space-around;\n    align-items: center;\n    background-color: var(--tan-1);\n    color: var(--text-dark);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n    padding: .6vmin;\n    text-align: center;\n    font-size: 2vmin;\n  }\n  \n  .form-container {\n    padding: 3vmin;\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n  }\n  \n  p.error-message {\n    color: var(--orange);\n    text-align: center;\n  }\n  \n  form {\n    display: grid;\n    grid-template-columns: 1fr 3fr;\n    gap: 1.25vmin;\n    color: var(--text-light);\n  }\n  \n  label {\n    font-size: 2vmin;\n    display: flex;\n    align-items: center;\n  }\n  \n  input {\n    padding: 1vmin;\n    font-size: 2vmin;\n    border: .1vmin solid var(--tan-3);\n    border-radius: .5vmin;\n    color: var(--text-dark);\n    background-image: none !important; /* prevent last pass */\n    outline: none;\n  }\n  \n  input:focus {\n    border-color: var(--orange);\n  }\n  \n  button, a.button {\n    margin: 1vmin;\n    padding: 1vmin;\n    color: var(--white);\n    background-color: var(--orange);\n    font-size: 2vmin;\n    font-weight: bold;\n    text-decoration: none;\n    text-align: center;\n    border: .1vmin solid var(--tan-2);\n    border-radius: .5vmin;\n    outline: none;\n    cursor: pointer;\n  }\n  \n  button.btn-sm {\n    font-size: 1.5vmin;\n    padding: .6vmin .8vmin;\n  }\n  \n  button.btn-xs {\n    font-size: 1vmin;\n    padding: .4vmin .5vmin;\n  }\n  \n  button:disabled, form:invalid button[type=\"submit\"] {\n    cursor: not-allowed;\n    background-color: var(--tan-4);\n  }\n  \n  button[type=\"submit\"] {\n    grid-column: span 2;\n    margin: 1vmin 0 0;\n  }"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/styles.scss"],"names":[],"mappings":"AAAA;EACI,gBAAA;EACA,gBAAA;EACA,gBAAA;EACA,gBAAA;EACA,gBAAA;EACA,eAAA;EACA,cAAA;EACA,qBAAA;EACA,oBAAA;AACJ;;AAEE;EACE,sBAAA;AACJ;;AAEE;EACE,SAAA;EACA,8JAAA;EAGA,mCAAA;EACA,kCAAA;EACA,6BAAA;EACA,cAAA;EACA,aAAA;AADJ;;AAIE;EACE,+EAAA;AADJ;;AAKE;EACE,YAAA;AAFJ;;AAKE;EACE,kBAAA;AAFJ;;AAKE;EACE,iBAAA;AAFJ;;AAKE;EACE,kBAAA;AAFJ;;AAKE;EACE,aAAA;EACA,uBAAA;EACA,mBAAA;AAFJ;;AAKE;EACE,sBAAA;AAFJ;;AAKE;EACE,yBAAA;AAFJ;;AAKE;EACE,kBAAA;AAFJ;;AAKE;EACE,aAAA;EACA,6BAAA;EACA,mBAAA;EACA,8BAAA;EACA,uBAAA;EACA,kCAAA;EACA,oBAAA;EACA,gBAAA;EACA,kBAAA;EACA,gBAAA;AAFJ;;AAKE;EACE,cAAA;EACA,8BAAA;EACA,kCAAA;EACA,oBAAA;AAFJ;;AAKE;EACE,oBAAA;EACA,kBAAA;AAFJ;;AAKE;EACE,aAAA;EACA,8BAAA;EACA,aAAA;EACA,wBAAA;AAFJ;;AAKE;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;AAFJ;;AAKE;EACE,cAAA;EACA,gBAAA;EACA,kCAAA;EACA,sBAAA;EACA,uBAAA;EACA,iCAAA,EAAA,sBAAA;EACA,aAAA;AAFJ;;AAKE;EACE,2BAAA;AAFJ;;AAKE;EACE,aAAA;EACA,cAAA;EACA,mBAAA;EACA,4BAAA;EACA,gBAAA;EACA,iBAAA;EACA,qBAAA;EACA,kBAAA;EACA,kCAAA;EACA,sBAAA;EACA,aAAA;EACA,eAAA;AAFJ;;AAKE;EACE,kBAAA;EACA,wBAAA;AAFJ;;AAKE;EACE,gBAAA;EACA,wBAAA;AAFJ;;AAKE;EACE,mBAAA;EACA,8BAAA;AAFJ;;AAKE;EACE,mBAAA;EACA,iBAAA;AAFJ","sourcesContent":[":root {\n    --white: #FFFFFF;\n    --tan-1: #FBF9F6;\n    --tan-2: #E7E2DD;\n    --tan-3: #E2D9D1;\n    --tan-4: #D3C1AE;\n    --blue:  #1998ee;\n    --red: #f26354;\n    --text-light: #968c84;\n    --text-dark: #615954;\n  }\n  \n  *, *:before, *:after {\n    box-sizing: border-box;\n  }\n  \n  body {\n    margin: 0;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n    sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    background-color: var(--blue);\n    padding: 2vmin;\n    height: 100vh;\n  }\n  \n  code {\n    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',\n      monospace;\n  }\n  \n  #root {\n    height: 100%;\n  }\n  \n  .align-ctr {\n    text-align: center;\n  }\n  \n  .align-rt {\n    text-align: right;\n  }\n  \n  .smaller {\n    font-size: smaller;\n  }\n  \n  .flex-ctr-ctr {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n  \n  .flex-col {\n    flex-direction: column;\n  }\n  \n  .flex-j-end {\n    justify-content: flex-end;\n  }\n  \n  .scroll-y {\n    overflow-y: scroll;\n  }\n  \n  .section-heading {\n    display: flex;\n    justify-content: space-around;\n    align-items: center;\n    background-color: var(--tan-1);\n    color: var(--text-dark);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n    padding: .6vmin;\n    text-align: center;\n    font-size: 2vmin;\n  }\n  \n  .form-container {\n    padding: 3vmin;\n    background-color: var(--tan-1);\n    border: .1vmin solid var(--tan-3);\n    border-radius: 1vmin;\n  }\n  \n  p.error-message {\n    color: var(--orange);\n    text-align: center;\n  }\n  \n  form {\n    display: grid;\n    grid-template-columns: 1fr 3fr;\n    gap: 1.25vmin;\n    color: var(--text-light);\n  }\n  \n  label {\n    font-size: 2vmin;\n    display: flex;\n    align-items: center;\n  }\n  \n  input {\n    padding: 1vmin;\n    font-size: 2vmin;\n    border: .1vmin solid var(--tan-3);\n    border-radius: .5vmin;\n    color: var(--text-dark);\n    background-image: none !important; /* prevent last pass */\n    outline: none;\n  }\n  \n  input:focus {\n    border-color: var(--orange);\n  }\n  \n  button, a.button {\n    margin: 1vmin;\n    padding: 1vmin;\n    color: var(--white);\n    background-color: var(--red);\n    font-size: 2vmin;\n    font-weight: bold;\n    text-decoration: none;\n    text-align: center;\n    border: .1vmin solid var(--tan-2);\n    border-radius: .5vmin;\n    outline: none;\n    cursor: pointer;\n  }\n  \n  button.btn-sm {\n    font-size: 1.5vmin;\n    padding: .6vmin .8vmin;\n  }\n  \n  button.btn-xs {\n    font-size: 1vmin;\n    padding: .4vmin .5vmin;\n  }\n  \n  button:disabled, form:invalid button[type=\"submit\"] {\n    cursor: not-allowed;\n    background-color: var(--tan-4);\n  }\n  \n  button[type=\"submit\"] {\n    grid-column: span 2;\n    margin: 1vmin 0 0;\n  }"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"root": `xJsnIOtqemouxNmIdKva`,
@@ -2751,4 +2792,4 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=App.e9c2b8a4dfda6a62b0e5c2b15a1a2f19.js.map
+//# sourceMappingURL=App.46919cef3163a1aa73cfac2ba7c33eb4.js.map
