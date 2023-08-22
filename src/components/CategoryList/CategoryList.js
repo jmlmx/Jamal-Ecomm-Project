@@ -5,7 +5,7 @@ export default function CategoryList({categories, activeCat, setActiveCat }) {
         key={cat}
         className={cat === activeCat ? styles.active : ''}
         onClick={() => setActiveCat(cat)}>
-            {cat}
+        {cat}
         </li>
         )
         return (
