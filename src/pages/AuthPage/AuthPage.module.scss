@@ -1,14 +1,14 @@
 .AuthPage {
-    height: 100%;
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-color: var(--white);
     border-radius: 2vmin;
 }
 
 .AuthPage h3 {
-    margin-top: 4vmin;
+    margin: 3vmin;
     text-align: center;
     color: var(--text-light);
     cursor: pointer;
