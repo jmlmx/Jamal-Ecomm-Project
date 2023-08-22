@@ -41,6 +41,12 @@ export default function NewOrderPage({ user, setUser }) {
         setCart(updatedCart)
     }
 
+    async function handleChangeQty(itemId, newQty) {
+        const updatedCart = await ordersAPI.setItemQtyInCart(itemId, newQty);
+        setCart(updatedCart);
+    }
+    
+
     async function handleCheckout() {
         await ordersAPI.checkout()
         navigate('/orders')
@@ -51,7 +57,7 @@ export default function NewOrderPage({ user, setUser }) {
             <Logo />
             <h1>Super Smoothies</h1>
             <UserLogOut  user={user}/>
-            <NavBar />
+            
             <MenuList 
             menuItems={menuItems.filter(item => item.category.name === activeCat)}
             handleAddToOrder={handleAddToOrder}

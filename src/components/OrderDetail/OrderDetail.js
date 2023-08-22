@@ -1,5 +1,5 @@
 import styles from './OrderDetail.module.scss'
-import LineItem from './LineItem/LineItem'
+import LineItem from '../LineItem/LineItem'
 
 export default function OrderDetail({ order, handleChangeQty, handleCheckout }) {
     if (!order) return null
