@@ -62,3 +62,21 @@ function createJWT (user) {
     { expiresIn: '24h' }
   )
 }
+
+
+module.exports = {
+  checkToken,
+  dataController,
+  apiController
+}
+
+/* -- Helper Functions -- */
+
+function createJWT (user) {
+  return jwt.sign(
+    // data payload
+    { user },
+    process.env.SECRET,
+    { expiresIn: '24h' }
+  )
+}
