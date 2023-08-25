@@ -29,7 +29,7 @@ const dataController = {
     try {
       const user = await User.findOne({ email: req.body.email })
       if (!user) throw new Error()
-      const match = await bcrypt.compare(req.body.password, user.password)
+      const match = bcrypt.compare(req.body.password, user.password)
       if (!match) throw new Error()
       res.locals.data.user = user
       res.locals.data.token = createJWT(user)
@@ -58,25 +58,7 @@ function createJWT (user) {
   return jwt.sign(
     // data payload
     { user },
-    process.env.SECRET,
-    { expiresIn: '24h' }
-  )
-}
-
-
-module.exports = {
-  checkToken,
-  dataController,
-  apiController
-}
-
-/* -- Helper Functions -- */
-
-function createJWT (user) {
-  return jwt.sign(
-    // data payload
-    { user },
-    process.env.SECRET,
+    process.env.SECRET_KEY,
     { expiresIn: '24h' }
   )
 }

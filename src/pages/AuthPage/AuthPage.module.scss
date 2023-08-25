@@ -9,6 +9,9 @@
 
   .AuthPage h3 {
     margin-top: 4vmin;
+    padding: 2vmin;
+    border: .1vmin solid var(--tan-3);
+    border-radius: 1vmin;
     text-align: center;
     color: var(--text-light);
     cursor: pointer;
