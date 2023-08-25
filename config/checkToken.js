@@ -5,7 +5,7 @@ module.exports = function(req, res, next) {
     if (token) {
         token = token.replace('Bearer ', '');
         // Check if token is valid and not expired
-        jwt.verify(token, process.env.SECRET, function(err, decoded) {
+        jwt.verify(token, process.env.SECRET_KEY, function(err, decoded) {
           req.user = err ? null : decoded.user;
           // Can remove this...
           // If your app doesn't care
