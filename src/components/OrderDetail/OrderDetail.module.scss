@@ -4,17 +4,24 @@
     align-items: center;
     padding: 3vmin;
     font-size: 2vmin;
-    color: var(--text-light);
+    color: var(--text-dark);
   }
   
   .OrderDetail .sectionHeading {
-    width: 100%
+    width: 100%;
+    text-align: center;
+    background-color: var(--white);
+    opacity: .8;
+    border-radius: 1vmin;
   }
   
   .OrderDetail .lineItemContainer {
     margin-top: 3vmin;
     justify-content: flex-start;
     height: calc(100vh - 18vmin);
+    background-color: var(--white);
+    border-radius: 2vmin;
+    opacity: .8;
     width: 100%;
   }
   
@@ -43,6 +50,9 @@
   .OrderDetail .hungry {
     position: absolute;
     top: 50vh;
-    font-size: 2vmin;
+    font-size: 3vmin;
+    font-family: 'almendra display';
+    font-weight: bolder;
+    color: var(--text-dark);
   }
   

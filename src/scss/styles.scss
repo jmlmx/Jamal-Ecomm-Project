@@ -4,7 +4,8 @@
   --tan-2: #E7E2DD;
   --tan-3: #E2D9D1;
   --tan-4: #D3C1AE;
-  --orange: #F67F00;
+  --black:  #0f0f0f;
+  --blue: #31529e;
   --text-light: #968c84;
   --text-dark: #615954;
 }
@@ -82,10 +83,11 @@ code {
   background-color: var(--tan-1);
   border: .1vmin solid var(--tan-3);
   border-radius: 1vmin;
+  opacity: .9;
 }
 
 p.error-message {
-  color: var(--orange);
+  color: var(--blue);
   text-align: center;
 }
 
@@ -113,14 +115,14 @@ input {
 }
 
 input:focus {
-  border-color: var(--orange);
+  border-color: var(--blue);
 }
 
 button, a.button {
   margin: 1vmin;
   padding: 1vmin;
   color: var(--white);
-  background-color: var(--orange);
+  background-color: var(--blue);
   font-size: 2vmin;
   font-weight: bold;
   text-decoration: none;
@@ -143,7 +145,7 @@ button.btn-xs {
 
 button:disabled, form:invalid button[type="submit"] {
   cursor: not-allowed;
-  background-color: var(--tan-4);
+  background-color: var(--blue);
 }
 
 button[type="submit"] {
